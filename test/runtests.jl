@@ -37,7 +37,7 @@ reflection = Reflection_Coeff(
 
 
 ### Sound speed profile
-sspl = Vec2([0f0,500f0,1000f0],[343f0,343f0,343f0])
+sspl = Vec2([0f0,500f0,1000f0],[343f0,333f0,323f0])
 ssp = SSP(sound_speed_profile= sspl)
 
 ssp.sound_speed_profile.x
@@ -47,7 +47,7 @@ opt = Analysis(
     analyse = "RG",
     option1 = "CFW",
     option2 = "F*",
-    num_ray = 16001,
+    num_ray = 161,
     alpha = Vec2(-80.0f0,80.0f0),
     box = Vec2(10f0,1000.0f0),
     step= 0
@@ -61,8 +61,11 @@ filename = opt.filename
 run_bellhop = `bellhop $filename`
 run(run_bellhop)
 
+PlotRay("$filename.ray")
+
 #rmfile(opt.filename)
 
 @testset "FreeRay.jl" begin
     # Write your tests here.
 end
+rmfile(opt.filename)

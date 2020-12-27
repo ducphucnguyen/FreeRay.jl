@@ -69,6 +69,9 @@ Vec3(a::T) where {T<:AbstractArray} = Vec3(copy(a), copy(a), copy(a))
 Vec3(a::T, b::T, c::T) where {T<:Real} = Vec3([a], [b], [c])
 
 
+# -------- #
+# rmfile #
+# -------- #
 function rmfile(filename::String)
     f1 = "$filename.brc"
     f2 = "$filename.bty"

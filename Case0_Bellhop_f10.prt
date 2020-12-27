@@ -15,8 +15,8 @@
    z (m)     alphaR (m/s)   betaR  rho (g/cm^3)  alphaI     betaI
 
       0.00       343.00      0.00     1.00       0.0000    0.0000
-    500.00       343.00      0.00     1.00       0.0000    0.0000
-   1000.00       343.00      0.00     1.00       0.0000    0.0000
+    500.00       333.00      0.00     1.00       0.0000    0.0000
+   1000.00       323.00      0.00     1.00       0.0000    0.0000
 
                                  ( RMS roughness =   0.00     )
      Bathymetry file selected
@@ -141,4 +141,4 @@ Tracing beam     154     73.00
 Tracing beam     157     76.00
 Tracing beam     160     79.00
 
- CPU Time =       0.781E-01s
+ CPU Time =       0.938E-01s
