@@ -85,7 +85,7 @@ function PlotRay(rayfil)
 
 
     # Plot ray
-    gr()
+    #gr()
     p = plot()
     xlabel!("Distance, m")
     ylabel!("Height, m")
