@@ -5,6 +5,8 @@
 [![Coverage](https://codecov.io/gh/ducphucnguyen/FreeRay.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/ducphucnguyen/FreeRay.jl)
 [![Coverage](https://coveralls.io/repos/github/ducphucnguyen/FreeRay.jl/badge.svg?branch=master)](https://coveralls.io/github/ducphucnguyen/FreeRay.jl?branch=master)
 
+[![Latest Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://ducphucnguyen.github.io/FreeRay.jl/build/)
+
 # RayTracer.jl
 
 ![CI](https://github.com/avik-pal/RayTracer.jl/workflows/CI/badge.svg?branch=master)
