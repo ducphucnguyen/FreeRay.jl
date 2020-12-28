@@ -29,6 +29,19 @@ seek(io, 2*4*recl)
 
 
 println(read(io, Int32))
+println(read(io, Int32))
+
+
+println(read(io, Int32))
+println(read(io, Int32))
+println(read(io, Int32))
+
+println(read(io, Int32))
+println(read(io, Int32))
+println(read(io, Float32))
+println(read(io, Float32))
+
+
 
 
 #position(io)
