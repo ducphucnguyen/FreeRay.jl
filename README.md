@@ -32,7 +32,7 @@ This package is registered. So open up a Julia 1.3+ repl and enter the pkg mode.
 
 ```julia
 julia> ]
-(v1.3) pkg> add RayTracer
+(v1.3) pkg> add https://github.com/ducphucnguyen/FreeRay.jl
 ```
 
 To use the master branch (not recommended) do.
