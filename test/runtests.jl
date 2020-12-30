@@ -88,3 +88,4 @@ end
 
 
 #read_shd("Case0_Bellhop_f10.shd")
+run(`bellhop`)
