@@ -9,3 +9,5 @@ deploydocs(
     deps    = nothing,
     make    = nothing
 )
+
+#serve(dir="docs/build")

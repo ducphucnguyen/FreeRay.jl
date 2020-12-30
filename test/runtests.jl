@@ -66,12 +66,12 @@ PlotRay("$filename.ray",
         xlabs = "Range, m",
         ylabs = "Height, m")
 
-PlotShd("$filename.shd";
+p = PlotShd("$filename.shd";
         xlabs = "Range, m",
         ylabs = "Transmission loss, dB",
         cblabs = "dB",
         climb = (40,80))
-
+savefig(p,"plot.png")
 
 PlotTlr("$filename.shd", -50;
         xlabs = "Range, m",
@@ -88,4 +88,3 @@ end
 
 
 #read_shd("Case0_Bellhop_f10.shd")
-run(`bellhop`)
