@@ -6,14 +6,14 @@ using Test
 # Point source 1000 Hz at 80 m
 source = Source(
     frequency = 10,
-    height = 920
+    height = -80
 )
 
 # Multiple recievers on grid
 receiver = Receiver(
     depth_point = 201,
     range_point = 10001,
-    depth = Vec2(0f0,1000f0),
+    depth = Vec2(-1000f0,0f0),
     range = Vec2(0f0,10f0)
 )
 
@@ -22,7 +22,7 @@ receiver = Receiver(
 # Terrain geometry
 terrain = Terrain(
     interp_type = "C",
-    profile = (Vec2([0f0,5f0,10f0],[1000f0,1000f0,1000f0]))
+    profile = (Vec2([0f0,5f0,10f0],[0f0,0f0,0f0]))
 )
 
 
@@ -37,7 +37,7 @@ reflection = Reflection_Coeff(
 
 
 ### Sound speed profile
-sspl = Vec2([0f0,500f0,1000f0],[343f0,333f0,323f0])
+sspl = Vec2([-1000f0,-500f0,0f0],[343f0,333f0,323f0])
 ssp = SSP(sound_speed_profile= sspl)
 
 ssp.sound_speed_profile.x
@@ -57,15 +57,34 @@ Environment(opt,source, receiver,ssp,terrain,reflection)
 
 
 # Run Bellhop
-filename = opt.filename
+fn= opt.filename
+filename = "temp\\$fn"
 run_bellhop = `bellhop $filename`
-run(run_bellhop)
+@time run(run_bellhop)
 
-PlotRay("$filename.ray")
+PlotRay("$filename.ray",
+        xlabs = "Range, m",
+        ylabs = "Height, m")
 
-#rmfile(opt.filename)
+PlotShd("$filename.shd";
+        xlabs = "Range, m",
+        ylabs = "Transmission loss, dB",
+        cblabs = "dB",
+        climb = (40,80))
+
+
+PlotTlr("$filename.shd", -50;
+        xlabs = "Range, m",
+        ylabs = "Transmission loss, dB",
+        xlim = (0,10000),
+        ylim = (20,120))
+
+
+rmfile(filename)
 
 @testset "FreeRay.jl" begin
     # Write your tests here.
 end
-rmfile(opt.filename)
+
+
+#read_shd("Case0_Bellhop_f10.shd")

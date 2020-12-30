@@ -13,7 +13,11 @@ include("atmosphere.jl")
 include("options.jl")
 
 include("environment.jl")
-include("postprocess.jl")
+include("plotray.jl")
+include("plotshd.jl")
+include("plottlr.jl")
+
+
 
 
 
