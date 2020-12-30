@@ -14,6 +14,13 @@ Ref: `Attenborough, Keith, et al. "Benchmark cases for outdoor sound propagation
 
 ## Case 1: Constant sound speed profile
 
+```@raw html
+<p align="center">
+    <img width=350 height=200 src="../../assets/case1.png">
+</p>
+```
+
+
 Load FreeRay package
 
 ```julia
@@ -143,6 +150,25 @@ PlotTlr("$filename.shd", -50;
 
 ## Case 2
 
+```@raw html
+<p align="center">
+    <img width=350 height=200 src="../../assets/case2.png">
+</p>
+```
+
 ## Case 3
 
+```@raw html
+<p align="center">
+    <img width=350 height=200 src="../../assets/case3.png">
+</p>
+```
+
 ## Case 4
+
+
+```@raw html
+<p align="center">
+    <img width=350 height=200 src="../../assets/case4.png">
+</p>
+```
