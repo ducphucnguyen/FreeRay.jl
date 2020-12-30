@@ -107,7 +107,7 @@ Depth = 2
 
 ```@contents
 Pages = [
-    "getting_started/teapot_rendering.md",
+    "Install_Bellhop.md",
     "getting_started/inverse_lighting.md",
     "getting_started/optim_compatibility.md"
 ]
