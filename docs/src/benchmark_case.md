@@ -16,7 +16,7 @@ Ref: `Attenborough, Keith, et al. "Benchmark cases for outdoor sound propagation
 
 ```@raw html
 <p align="center">
-    <img width=350 height=200 src="../../assets/case1.png">
+    <img width=350 height=200 src="././assets/case1.png">
 </p>
 ```
 
@@ -152,7 +152,7 @@ PlotTlr("$filename.shd", -50;
 
 ```@raw html
 <p align="center">
-    <img width=350 height=200 src="../../assets/case2.png">
+    <img width=350 height=200 src="././assets/case2.png">
 </p>
 ```
 
@@ -160,7 +160,7 @@ PlotTlr("$filename.shd", -50;
 
 ```@raw html
 <p align="center">
-    <img width=350 height=200 src="../../assets/case3.png">
+    <img width=350 height=200 src="././assets/case3.png">
 </p>
 ```
 
@@ -169,6 +169,6 @@ PlotTlr("$filename.shd", -50;
 
 ```@raw html
 <p align="center">
-    <img width=350 height=200 src="../../assets/case4.png">
+    <img width=350 height=200 src="././assets/case4.png">
 </p>
 ```
