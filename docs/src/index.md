@@ -2,7 +2,7 @@
 
 ```@raw html
 <p align="center">
-    <img width=500 height=400 src="../../plot.PNG">
+    <img width=500 height=400 src="./plot.png">
 </p>
 ```
 
