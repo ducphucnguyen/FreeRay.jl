@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Wind turbine noise propagation · FreeRay</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">FreeRay</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">FreeRay : Bellhop for Outdoor Sound Propagation</a></li><li><a class="tocitem" href="../benchmark_case/">Benchmark cases</a></li><li class="is-active"><a class="tocitem" href>Wind turbine noise propagation</a><ul class="internal"><li><a class="tocitem" href="#Read-elevation-and-sound-speed-files"><span>Read elevation and sound speed files</span></a></li><li><a class="tocitem" href="#Point-source-100-Hz-at-80-m-above-ground-level"><span>Point source 100 Hz at 80 m above ground level</span></a></li><li><a class="tocitem" href="#Receiver"><span>Receiver</span></a></li><li><a class="tocitem" href="#Terrain-geometry"><span>Terrain geometry</span></a></li><li><a class="tocitem" href="#Boundary-condition"><span>Boundary condition</span></a></li><li><a class="tocitem" href="#Sound-speed-profile"><span>Sound speed profile</span></a></li><li><a class="tocitem" href="#Analysis"><span>Analysis</span></a></li><li><a class="tocitem" href="#Create-input-files"><span>Create input files</span></a></li><li><a class="tocitem" href="#Run-Bellhop"><span>Run Bellhop</span></a></li><li><a class="tocitem" href="#Results"><span>Results</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Wind turbine noise propagation</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Wind turbine noise propagation</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com//blob/master/docs/src/real_example.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Wind-turbine-noise-propagation"><a class="docs-heading-anchor" href="#Wind-turbine-noise-propagation">Wind turbine noise propagation</a><a id="Wind-turbine-noise-propagation-1"></a><a class="docs-heading-anchor-permalink" href="#Wind-turbine-noise-propagation" title="Permalink"></a></h1><p>In this example, we will model a real case. A wind turbine is positioned on the top of a ridge. The wind turbine hub height is 80 m. We need to prepare input files as follows:</p><ul><li>elevation file</li><li>sound speed profile file</li></ul><h2 id="Read-elevation-and-sound-speed-files"><a class="docs-heading-anchor" href="#Read-elevation-and-sound-speed-files">Read elevation and sound speed files</a><a id="Read-elevation-and-sound-speed-files-1"></a><a class="docs-heading-anchor-permalink" href="#Read-elevation-and-sound-speed-files" title="Permalink"></a></h2><p>Assume that we already have elevation and sound speed profile files in text files. The structure of these files are <code>[range, elevation]</code> and <code>[height, sound speed]</code>. We can read to Julia using DelimitedFiles package.</p><pre><code class="language-julia">using DelimitedFiles
+
+# read elevation and sound speed files.
+elv = readdlm(&quot;./temp/elevation.txt&quot;) # [range(km), elevation (m)]
+ssp = readdlm(&quot;./temp/ssp.txt&quot;) # [height(m), sound speed(m/s)]</code></pre><h2 id="Point-source-100-Hz-at-80-m-above-ground-level"><a class="docs-heading-anchor" href="#Point-source-100-Hz-at-80-m-above-ground-level">Point source 100 Hz at 80 m above ground level</a><a id="Point-source-100-Hz-at-80-m-above-ground-level-1"></a><a class="docs-heading-anchor-permalink" href="#Point-source-100-Hz-at-80-m-above-ground-level" title="Permalink"></a></h2><p>Because the hub height is at 80 m above the ground level, thus the absolute source height is added the ground elevation value. In this case, it is 169 m.</p><pre><code class="language-julia">source = Source(
+    frequency = 100,
+    height = -80 + (-169) # 169 is ground level
+)</code></pre><h2 id="Receiver"><a class="docs-heading-anchor" href="#Receiver">Receiver</a><a id="Receiver-1"></a><a class="docs-heading-anchor-permalink" href="#Receiver" title="Permalink"></a></h2><p>Similar to previous examples, we will analyse for a height of 1000 m and a range of 10 km with resolution is 1 m both directions.</p><pre><code class="language-julia">receiver = Receiver(
+    depth_point = 1001,
+    range_point = 10001,
+    depth = Vec2(-1000f0,0f0),
+    range = Vec2(0f0,10f0)
+)</code></pre><h2 id="Terrain-geometry"><a class="docs-heading-anchor" href="#Terrain-geometry">Terrain geometry</a><a id="Terrain-geometry-1"></a><a class="docs-heading-anchor-permalink" href="#Terrain-geometry" title="Permalink"></a></h2><p>Input elevation files to 2D vector <code>Vec2</code>.</p><pre><code class="language-julia">terrain = Terrain(
+    interp_type = &quot;C&quot;,
+    profile = (Vec2(elv[:,1],elv[:,2]))
+)</code></pre><h2 id="Boundary-condition"><a class="docs-heading-anchor" href="#Boundary-condition">Boundary condition</a><a id="Boundary-condition-1"></a><a class="docs-heading-anchor-permalink" href="#Boundary-condition" title="Permalink"></a></h2><p>The boundary conditions are similar as previous examples.</p><pre><code class="language-julia">Zc = 12.81 + 11.62im
+Theta, Rmag, Rphase = R_coeff(Zc;len=100)
+
+brc = Vec3(Theta,Rmag,Rphase)
+trc = Vec3([0f0,45f0,90f0],[0f0,0f0,0f0],[0f0,0f0,0f0])
+
+reflection = Reflection_Coeff(
+    top_coeff = trc,
+    bottom_coeff = brc
+)</code></pre><h2 id="Sound-speed-profile"><a class="docs-heading-anchor" href="#Sound-speed-profile">Sound speed profile</a><a id="Sound-speed-profile-1"></a><a class="docs-heading-anchor-permalink" href="#Sound-speed-profile" title="Permalink"></a></h2><p>We just need to read sound speed profile to 2D vector <code>Vec2</code>. Note in the case our wind profile is relatively simple, we can input directly to here instead of preparing a text file of sound speed profile.</p><pre><code class="language-julia">sspl = Vec2(ssp[:,1],ssp[:,2]) # case 1
+ssp = SSP(sound_speed_profile= sspl)</code></pre><h2 id="Analysis"><a class="docs-heading-anchor" href="#Analysis">Analysis</a><a id="Analysis-1"></a><a class="docs-heading-anchor-permalink" href="#Analysis" title="Permalink"></a></h2><p>If you are not familiar with below set-up, please look back previous examples.</p><pre><code class="language-julia">opt = Analysis(
+    filename = &quot;RealCase_Bellhop_f100&quot;,
+    analyse = &quot;CG&quot;,
+    option1 = &quot;CFW&quot;,
+    option2 = &quot;F*&quot;,
+    num_ray = 1601,
+    alpha = Vec2(-80.0f0,80.0f0),
+    box = Vec2(10f0,1000.0f0),
+    step= 0
+)</code></pre><h2 id="Create-input-files"><a class="docs-heading-anchor" href="#Create-input-files">Create input files</a><a id="Create-input-files-1"></a><a class="docs-heading-anchor-permalink" href="#Create-input-files" title="Permalink"></a></h2><pre><code class="language-julia">Environment(opt,source, receiver,ssp,terrain,reflection)</code></pre><h2 id="Run-Bellhop"><a class="docs-heading-anchor" href="#Run-Bellhop">Run Bellhop</a><a id="Run-Bellhop-1"></a><a class="docs-heading-anchor-permalink" href="#Run-Bellhop" title="Permalink"></a></h2><pre><code class="language-julia">fn= opt.filename
+filename = &quot;temp\\$fn&quot;
+run_bellhop = `bellhop $filename`
+@time run(run_bellhop)</code></pre><h2 id="Results"><a class="docs-heading-anchor" href="#Results">Results</a><a id="Results-1"></a><a class="docs-heading-anchor-permalink" href="#Results" title="Permalink"></a></h2><p>Waiting for 29.4 seconds, here is our results!</p><pre><code class="language-julia">p1 = PlotRay(&quot;$filename.ray&quot;,
+        xlabs = &quot;Range, m&quot;,
+        ylabs = &quot;Height, m&quot;)
+
+        plot!(p1,elv[:,1]*1000,elv[:,2],
+        lw=0,fill = 0, color = &quot;#8c510a&quot;,legend = false)
+        yflip!(true)
+
+        scatter!(p1,[0], [source.height],
+        markersize = 6, color = &quot;#4daf4a&quot;)
+
+#savefig(p1,&quot;ray_real.png&quot;)</code></pre><p align="center">
+    <img width=450 height=200 src="./ray_real.png">
+</p><p>Transmission loss field</p><pre><code class="language-julia">p2 = PlotShd(&quot;$filename.shd&quot;;
+        xlabs = &quot;Range, m&quot;,
+        ylabs = &quot;Transmission loss, dB&quot;,
+        cblabs = &quot;dB&quot;,
+        climb = (40,120))
+
+        plot!(p2,elv[:,1]*1000,elv[:,2],
+        lw=0,fill = 0, color = &quot;#8c510a&quot;, legend = false)
+        yflip!(true)
+
+        scatter!(p2,[0], [source.height],
+        markersize = 6, color = &quot;#4daf4a&quot;,
+        label = &quot;Source&quot;)
+
+#savefig(p2,&quot;trans_real.png&quot;)</code></pre><p align="center">
+    <img width=450 height=200 src="./trans_real.png">
+</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../benchmark_case/">« Benchmark cases</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Thursday 31 December 2020 15:24">Thursday 31 December 2020</span>. Using Julia version 1.5.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

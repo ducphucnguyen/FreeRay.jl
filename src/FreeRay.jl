@@ -1,7 +1,7 @@
 module FreeRay
 
 # using Julia package
-using Parsers, DataFrames, Plots
+using Parsers, DataFrames, Plots, SpecialFunctions
 
 # Model utilities
 include("utils.jl")
@@ -11,6 +11,8 @@ include("geometry.jl")
 include("boundary.jl")
 include("atmosphere.jl")
 include("options.jl")
+include("impcoeff.jl")
+
 
 include("environment.jl")
 include("plotray.jl")

@@ -73,7 +73,7 @@ Depth = 2
 ```@contents
 Pages = [
     "benchmark_case.md",
-    "getting_started/inverse_lighting.md",
+    "real_example.md",
     "getting_started/optim_compatibility.md"
 ]
 Depth = 2

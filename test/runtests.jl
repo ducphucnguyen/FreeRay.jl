@@ -5,13 +5,13 @@ using Test
 #### Geometry
 # Point source 1000 Hz at 80 m
 source = Source(
-    frequency = 10,
-    height = -80
+    frequency = 100,
+    height = -5
 )
 
 # Multiple recievers on grid
 receiver = Receiver(
-    depth_point = 201,
+    depth_point = 1001,
     range_point = 10001,
     depth = Vec2(-1000f0,0f0),
     range = Vec2(0f0,10f0)
@@ -27,7 +27,10 @@ terrain = Terrain(
 
 
 ### Boundary condition
-brc = Vec3([0f0,45f0,90f0],[1f0,1f0,1f0],[0f0,0f0,0f0])
+Zc = 12.81 + 11.62im
+Theta, Rmag, Rphase = R_coeff(Zc;len=100)
+
+brc = Vec3(Theta,Rmag,Rphase)
 trc = Vec3([0f0,45f0,90f0],[0f0,0f0,0f0],[0f0,0f0,0f0])
 
 reflection = Reflection_Coeff(
@@ -37,10 +40,12 @@ reflection = Reflection_Coeff(
 
 
 ### Sound speed profile
-sspl = Vec2([-1000f0,-500f0,0f0],[343f0,333f0,323f0])
+#sspl = Vec2([-1000f0,-500f0,0f0],[243f0,293,343]) # case 3
+sspl = Vec2([-1000f0,-500f0,0f0],[343f0,343f0,343f0]) # case 1
+#sspl = Vec2([-1000f0,-500f0,0f0],[443f0,393f0,343f0]) # case 2
+#sspl = Vec2([-1000f0,-300f0,-100f0,0f0],[333f0,333f0,353f0,343f0]) #case 4
 ssp = SSP(sound_speed_profile= sspl)
 
-ssp.sound_speed_profile.x
 ### Analysis
 opt = Analysis(
     filename = "Case0_Bellhop_f10",
@@ -62,18 +67,21 @@ filename = "temp\\$fn"
 run_bellhop = `bellhop $filename`
 @time run(run_bellhop)
 
-PlotRay("$filename.ray",
+p1 = PlotRay("$filename.ray",
         xlabs = "Range, m",
         ylabs = "Height, m")
 
-p = PlotShd("$filename.shd";
+savefig(p1,"ray1.png")
+
+p2 = PlotShd("$filename.shd";
         xlabs = "Range, m",
         ylabs = "Transmission loss, dB",
         cblabs = "dB",
         climb = (40,80))
-savefig(p,"plot.png")
 
-PlotTlr("$filename.shd", -50;
+#savefig(p2,"transc4.png")
+
+PlotTlr("$filename.shd", -7;
         xlabs = "Range, m",
         ylabs = "Transmission loss, dB",
         xlim = (0,10000),
