@@ -9,12 +9,6 @@
 
 # FreeRay : Bellhop for Outdoor Sound Propagation
 
-```@raw html
-<p align="center">
-    <img width=500 height=400 src="plot.png">
-</p>
-```
-
 FreeRay.jl is a library for outdoor noise propagation. Numerical ray tracing models are implemented using Bellhop ray tracing program written in Fortran by Michael Porter. FreeRay.jl provides utilities for
 
 1. Prepare input files, run Bellhop and plot output.
