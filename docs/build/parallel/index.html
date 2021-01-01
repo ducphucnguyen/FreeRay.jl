@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Parallel running Bellhop · FreeRay</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit">FreeRay</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">FreeRay : Bellhop for Outdoor Sound Propagation</a></li><li><a class="tocitem" href="../benchmark_case/">Benchmark cases</a></li><li class="is-active"><a class="tocitem" href>Parallel running Bellhop</a><ul class="internal"><li><a class="tocitem" href="#Load-package"><span>Load package</span></a></li><li><a class="tocitem" href="#elevation-and-sound-speed-data"><span>elevation and sound speed data</span></a></li><li><a class="tocitem" href="#Receiver"><span>Receiver</span></a></li><li><a class="tocitem" href="#Terrain"><span>Terrain</span></a></li><li><a class="tocitem" href="#Sound-speed-profile"><span>Sound speed profile</span></a></li><li><a class="tocitem" href="#Frequency"><span>Frequency</span></a></li><li><a class="tocitem" href="#Parallel-running"><span>Parallel running</span></a></li></ul></li><li><a class="tocitem" href="../real_example/">Wind turbine noise propagation</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Parallel running Bellhop</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Parallel running Bellhop</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com//blob/master/docs/src/parallel.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Parallel-running-Bellhop"><a class="docs-heading-anchor" href="#Parallel-running-Bellhop">Parallel running Bellhop</a><a id="Parallel-running-Bellhop-1"></a><a class="docs-heading-anchor-permalink" href="#Parallel-running-Bellhop" title="Permalink"></a></h1><p>We may see in previous examples that Bellhop is very efficient and fast! The answer for my question if we can run Bellhop faster several time is YES. We can run Bellhop parallel very simple in Julia with effortless. But why do we need to run Bellhop parallel? because in outdoor sound propagation modelling, we usually need to predict acoustic field (or transmission loss) at multiple frequencies (1/3-octave frequency) to estimate overall loss (or overall sound pressure level). This task is independent but it takes time. For this particular task, we can use <a href="https://docs.julialang.org/en/v1/base/multi-threading/">Multi-Threading</a> in Julia to run multiple tasks simultaneously.</p><h2 id="Load-package"><a class="docs-heading-anchor" href="#Load-package">Load package</a><a id="Load-package-1"></a><a class="docs-heading-anchor-permalink" href="#Load-package" title="Permalink"></a></h2><pre><code class="language-julia">using FreeRay, DelimitedFiles</code></pre><h2 id="elevation-and-sound-speed-data"><a class="docs-heading-anchor" href="#elevation-and-sound-speed-data">elevation and sound speed data</a><a id="elevation-and-sound-speed-data-1"></a><a class="docs-heading-anchor-permalink" href="#elevation-and-sound-speed-data" title="Permalink"></a></h2><pre><code class="language-julia">elv = readdlm(&quot;./temp/elevation.txt&quot;)
+ssp = readdlm(&quot;./temp/ssp.txt&quot;)</code></pre><h2 id="Receiver"><a class="docs-heading-anchor" href="#Receiver">Receiver</a><a id="Receiver-1"></a><a class="docs-heading-anchor-permalink" href="#Receiver" title="Permalink"></a></h2><pre><code class="language-julia">receiver = Receiver(
+    depth_point = 1001,
+    range_point = 10001,
+    depth = Vec2(-1000f0,0f0),
+    range = Vec2(0f0,10f0)
+)</code></pre><h2 id="Terrain"><a class="docs-heading-anchor" href="#Terrain">Terrain</a><a id="Terrain-1"></a><a class="docs-heading-anchor-permalink" href="#Terrain" title="Permalink"></a></h2><pre><code class="language-julia">terrain = Terrain(
+    interp_type = &quot;C&quot;,
+    profile = (Vec2(elv[:,1],elv[:,2]))
+)</code></pre><h2 id="Sound-speed-profile"><a class="docs-heading-anchor" href="#Sound-speed-profile">Sound speed profile</a><a id="Sound-speed-profile-1"></a><a class="docs-heading-anchor-permalink" href="#Sound-speed-profile" title="Permalink"></a></h2><pre><code class="language-julia">sspl = Vec2(ssp[:,1],ssp[:,2])
+ssp = SSP(sound_speed_profile= sspl)</code></pre><h2 id="Frequency"><a class="docs-heading-anchor" href="#Frequency">Frequency</a><a id="Frequency-1"></a><a class="docs-heading-anchor-permalink" href="#Frequency" title="Permalink"></a></h2><p>For example, we want to run multiple frequencies centred at 3-octave bands simultaneously.</p><pre><code class="language-julia">fcentre = 10.0 .^ (0.1 .* (12:43)) # octave frequency centre
+fcentre = Float32.(fcentre) # convert to Float32</code></pre><h2 id="Parallel-running"><a class="docs-heading-anchor" href="#Parallel-running">Parallel running</a><a id="Parallel-running-1"></a><a class="docs-heading-anchor-permalink" href="#Parallel-running" title="Permalink"></a></h2><p>In this simulation, frequency has only effect on the characteristic impedance. Thus, the value of Zc will be different for each frequency. For illustration purpose, we will use the same value Zc for all frequencies.</p><p>The difference in here is that we will use a loop function to launch several tasks at the same time. These tasks will be execute independently in each thread. To do so, we just need to use <code>@threads</code> macro as below code. My computer have 4 cores and 8 threads, thus I will test some options such as using 4, 6, 8 threads compared to not using macro <code>@threads</code>.</p><pre><code class="language-julia">Threads.nthreads() = 8 # select numbers of threads
+#@threads
+@time @threads for i = 1: length(fcentre)
+    #println(i)
+    #a[i] = Threads.threadid()
+
+    frequency = fcentre[i]
+    # Point source 100 Hz at 80 m above ground level
+    source = Source(
+        frequency = frequency,
+        height = -80f0 + (-169f0) # 169 is ground level
+    )
+
+
+    ### Boundary condition
+    Zc = 12.81 + 11.62im
+    Theta, Rmag, Rphase = R_coeff(Zc;len=100)
+
+    brc = Vec3(Theta,Rmag,Rphase)
+    trc = Vec3([0f0,45f0,90f0],[0f0,0f0,0f0],[0f0,0f0,0f0])
+
+    reflection = Reflection_Coeff(
+        top_coeff = trc,
+        bottom_coeff = brc
+    )
+
+
+    ### Analysis
+    opt = Analysis(
+        filename = &quot;Parallel_Bellhop_$i&quot;,
+        analyse = &quot;CG&quot;,
+        option1 = &quot;CFW&quot;,
+        option2 = &quot;F*&quot;,
+        num_ray = 161,
+        alpha = Vec2(-80.0f0,80.0f0),
+        box = Vec2(10f0,1000.0f0),
+        step= 0
+    )
+
+    Environment(opt,source, receiver,ssp,terrain,reflection)
+
+    # Run Bellhop
+    fn= opt.filename
+    filename = &quot;temp\\$fn&quot;
+    run_bellhop = `bellhop $filename`
+    run(run_bellhop)
+    rmfile(filename)
+
+end # end parallel</code></pre><p align="center">
+    <img width=450 height=200 src="./Par.png">
+</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../benchmark_case/">« Benchmark cases</a><a class="docs-footer-nextpage" href="../real_example/">Wind turbine noise propagation »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 1 January 2021 22:36">Friday 1 January 2021</span>. Using Julia version 1.5.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

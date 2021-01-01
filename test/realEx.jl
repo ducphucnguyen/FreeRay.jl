@@ -100,3 +100,4 @@ p2 = PlotShd("$filename.shd";
         label = "Source")
 
 #savefig(p2,"trans_real.png")
+rmfile(filename)

@@ -83,6 +83,7 @@ function rmfile(filename::String)
     rm(f2, force=true)
     rm(f3, force=true)
     rm(f4, force=true)
+    rm(f5, force=true)
 
 end
 
