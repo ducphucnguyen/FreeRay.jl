@@ -33,9 +33,13 @@ ssp = SSP(sound_speed_profile= sspl)
 fcentre = 10.0 .^ (0.1 .* (12:43))
 fcentre = Float32.(fcentre)
 
+a = zeros(32)
+Threads.nthreads() = 2
 #@threads
-@time @threads for i = 1: length(fcentre)
+@time for i = 1: length(fcentre)
     println(i)
+    a[i] = Threads.threadid()
+
     frequency = fcentre[i]
     # Point source 100 Hz at 80 m above ground level
     source = Source(
@@ -111,3 +115,11 @@ p2 = PlotShd("$filename.shd";
         label = "Source")
 
 #savefig(p2,"trans_real.png")
+using Plots
+p3=plot([0,2,4,6,8],[386.7,206.54,122.5,110.5,94.3],
+    lw = 2,
+    label = "Run time",
+    xlabel = "Number of threads",
+    ylabel = "Run time, seconds",
+    color = [:orange], marker = ([:hex], 6, Plots.stroke(3, :gray)))
+savefig(p3,"Par.png")

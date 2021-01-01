@@ -107,6 +107,7 @@ Threads.nthreads() = 8 # select numbers of threads
 
 end # end parallel
 ```
+We can run Bellhop 4 times faster! without any effort just use `@threads` in Julia.
 
 ```@raw html
 <p align="center">
