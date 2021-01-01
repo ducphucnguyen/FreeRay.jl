@@ -74,7 +74,7 @@ Depth = 2
 Pages = [
     "benchmark_case.md",
     "real_example.md",
-    "getting_started/optim_compatibility.md"
+    "parallel.md"
 ]
 Depth = 2
 ```
