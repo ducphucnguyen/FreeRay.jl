@@ -1,4 +1,6 @@
-export R_coeff, Q_coeff
+export R_coeff, Q_coeff, impedanceM1
+include("constant.jl")
+#using .constant
 
 # plan-wave reflection coefficient
 """
@@ -62,10 +64,10 @@ julia> 𝛹, Q_mag, Q_phase = R_coeff(Zc)
 ```
 
 """
-function Q_coeff(Zc,R2,f)
+function Q_coeff(Zc,R2,f,len=100)
     λ = c0/f
     k = 2*π/λ
-    𝛹 = range(0,π/2, length = 1000)
+    𝛹 = range(0,π/2, length = len)
 
     Q_coeff = randn(ComplexF64, (length(𝛹), 1))
     for i=1:length(𝛹)
@@ -74,6 +76,6 @@ function Q_coeff(Zc,R2,f)
         Q_coeff[i] = (Zc*sin(𝛹[i]) - 1 + 2*Fd) / (Zc*sin(𝛹[i]) + 1)
     end
 
-    return Float32.(𝛹*180/π), Float32.(abs.(Q_coeff)), Float32.(angle.(Q_coeff)*180/π)
+    return Float32.(𝛹*180/π), Float32.(abs.(Q_coeff[:,1])), Float32.(angle.(Q_coeff[:,1])*180/π)
 
 end

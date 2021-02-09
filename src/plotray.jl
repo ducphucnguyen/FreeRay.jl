@@ -4,7 +4,9 @@ export PlotRay
 
 function PlotRay(rayfil;
     xlabs = "Range, m",
-    ylabs = "Height, m")
+    ylabs = "Height, m",
+    xlim = (0,10_000),
+    ylim = (-1000,0))
 
     # parse functions
     function parse_numbers(s)
@@ -91,8 +93,8 @@ function PlotRay(rayfil;
     p = plot()
     xlabel!(xlabs)
     ylabel!(ylabs)
-    #xlims!(0,10_000)
-    #ylims!(0,1000)
+    xlims!(xlim[1],xlim[2])
+    ylims!(ylim[1],ylim[2])
     yflip!(true)
 
 

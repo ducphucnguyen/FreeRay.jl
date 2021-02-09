@@ -1,5 +1,24 @@
 export PlotShd
 
+"""
+
+    PlotShd(filename)
+
+Plot transmission loss field
+
+# Arguments
+- `filename`: *.shd
+
+# Output
+- Heatmap transmission loss
+
+
+# Example
+```julia-repl
+julia> PlotShd("Case1.shd")
+```
+
+"""
 function PlotShd(filename::String;
         xlabs::String = "Distance, m",
         ylabs::String = "Transmission loss, dB",

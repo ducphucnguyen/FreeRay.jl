@@ -1,4 +1,4 @@
-export Vec2, Vec3, rmfile, read_shd
+export Vec2, Vec3, rmfile, read_shd, getCenterFreq
 
 """
     Vec2
@@ -197,4 +197,40 @@ function read_shd(filename::String)
         close(io) # Done read shd file
 
         return pressure, Pos_r_r, Pos_r_z
+end
+
+function getCenterFreq(Bandwidth::String)
+
+        Bandwidth = "1/3 octave"
+
+        fcentre = 10 .^(0.1.*(1:43))
+        fd = 10^0.05
+        fupper = fcentre * fd
+        flower = fcentre / fd
+end
+
+
+
+
+# ANSI S1.11-2004
+# Ref. https://law.resource.org/pub/us/cfr/ibr/002/ansi.s1.11.2004.pdf
+
+function getCenterFreq(;bandwidth::Int64=1, lim=(3.0,22_000.0))
+
+        fr = 1000.
+        G10 = 10^(3/10) # Conversion constant based 10
+        x = -10:1:50 # band number
+
+        if isodd(bandwidth)
+                fm = ( G10 .^( (x .- 30) ./bandwidth ) )*(fr)
+        elseif iseven(bandwidth)
+                fm = ( G10 .^( (2*x .- 59) ./(2*bandwidth) ) )*(fr)
+        else
+                @warn "Fraction of an octave band should be a Int number"
+        end
+
+        idx = findall(x-> (x>=lim[1]) & (x<=lim[2]), fm)
+
+        return fm[idx]
+
 end
