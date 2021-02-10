@@ -17,12 +17,9 @@ include("windprofile.jl")
 
 
 
-
-
-
 include("environment.jl")
 include("plotray.jl")
-include("plotshd.jl")
+include("PlotShd.jl")
 include("plottlr.jl")
 
 
