@@ -87,7 +87,7 @@ function Environment(option::Options,
 
 
     ### Write battery files
-    filename2 = "temp\\$fn.bty" # battery file
+    filename2 = "$fn.bty" # battery file
     interp_tp = terrain.interp_type
     numpoint = size(terrain.profile.x,1)
 
@@ -105,7 +105,7 @@ function Environment(option::Options,
 
 
     ### Write top and bottom reflection coefficient files
-    filename3 = "temp\\$fn.brc" # bottom reflection
+    filename3 = "$fn.brc" # bottom reflection
     num_bot = size(reflection.bottom_coeff.x,1)
     open(filename3,"w") do io
         write(io,"$num_bot   \n")
@@ -119,7 +119,7 @@ function Environment(option::Options,
     end # end write bottom reflection coefficient file
 
 
-    filename4 = "temp\\$fn.trc" # top reflection
+    filename4 = "$fn.trc" # top reflection
     num_top = size(reflection.top_coeff.x,1)
     open(filename4,"w") do io
         write(io,"$num_top   \n")
