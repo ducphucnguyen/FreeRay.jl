@@ -11,7 +11,7 @@ function Environment(option::Options,
                     reflection::Boundary)
 
     fn = option.filename
-    filename = "temp\\$fn.env" # environment file
+    filename = "$fn.env" # environment file
 
     freq = source.frequency
     nmedia = 1
