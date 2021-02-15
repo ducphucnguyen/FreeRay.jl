@@ -1,5 +1,5 @@
 using FreeRay
-using Test
+using Test, Plots
 
 
 #### Geometry
@@ -63,7 +63,7 @@ Environment(opt,source, receiver,ssp,terrain,reflection)
 
 # Run Bellhop
 fn= opt.filename
-filename = "temp\\$fn"
+filename = "$fn"
 run_bellhop = `bellhop $filename`
 @time run(run_bellhop)
 
@@ -71,21 +71,21 @@ p1 = PlotRay("$filename.ray",
         xlabs = "Range, m",
         ylabs = "Height, m")
 
-savefig(p1,"ray1.png")
+#savefig(p1,"ray1.png")
 
-p2 = PlotShd("$filename.shd";
-        xlabs = "Range, m",
-        ylabs = "Transmission loss, dB",
-        cblabs = "dB",
-        climb = (40,80))
+#p2 = PlotShd("$filename.shd";
+#        xlabs = "Range, m",
+#        ylabs = "Transmission loss, dB",
+#        cblabs = "dB",
+#        climb = (40,80))
 
 #savefig(p2,"transc4.png")
 
-PlotTlr("$filename.shd", -7;
-        xlabs = "Range, m",
-        ylabs = "Transmission loss, dB",
-        xlim = (0,10000),
-        ylim = (20,120))
+#PlotTlr("$filename.shd", -7;
+#        xlabs = "Range, m",
+#        ylabs = "Transmission loss, dB",
+#        xlim = (0,10000),
+#        ylim = (20,120))
 
 
 rmfile(filename)

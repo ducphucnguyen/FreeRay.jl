@@ -157,7 +157,7 @@ terrain = Terrain(
 
 
 
-@time @threads for simID = 1:2#nrow(df)
+@time @threads for simID = 1:1#nrow(df)
     println(simID)
 
     freqSim, ZcSim, idxWind = inforEx(df,simID)
@@ -192,10 +192,10 @@ terrain = Terrain(
         analyse = "CB",
         option1 = "CFW",
         option2 = "F*",
-        num_ray = 1601,
+        num_ray = 16001,
         alpha = Vec2(-80.0f0,80.0f0),
         box = Vec2(10f0,1000.0f0),
-        step= 0
+        step= 0.1
     )
 
     # Create environment files
